@@ -1,5 +1,6 @@
 package com.sweadex.thechestwhisperer;
 
+import com.sweadex.thechestwhisperer.network.NetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
@@ -38,20 +39,22 @@ public class ChestMonitor {
 
                 int lastCount = lastItemCounts.getOrDefault(pos, itemCount);
                 if (itemCount < lastCount) {
-                    if (!player.getGameProfile().getName().equals(ownerUUID)) {
+                    if (!player.getUUID().toString().equals(ownerUUID)) {
                         data.putString("lastThief", player.getName().getString());
                         chest.setChanged();
+                        NetworkHandler.sendChestStolenUpdate(pos, true);
                         System.out.println("Vol détecté par " + player.getName().getString());
                     }
                 }
 
                 lastItemCounts.put(pos, itemCount);
 
-                if (player.getGameProfile().getName().equals(ownerUUID)) {
-                    data.remove("lastThief");
-                    chest.setChanged();
-                    System.out.println("Propriétaire a ouvert le coffre, reset.");
-                }
+                //if (player.getGameProfile().getName().equals(ownerUUID)) {
+                //    data.remove("lastThief");
+                //    chest.setChanged();
+                //    NetworkHandler.sendChestStolenUpdate(pos, false);
+                //    System.out.println("Propriétaire a ouvert le coffre, reset.");
+                //}
             }
         }
     }

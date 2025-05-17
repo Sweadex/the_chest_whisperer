@@ -1,5 +1,6 @@
 package com.sweadex.thechestwhisperer;
 
+import com.sweadex.thechestwhisperer.network.NetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,6 +24,7 @@ public class TheChestWhisperer
         IEventBus modEventBus = MinecraftForge.EVENT_BUS;
         modEventBus.register(this);
         MinecraftForge.EVENT_BUS.register(new ChestMonitor());
+        NetworkHandler.register();
     }
 
     @SubscribeEvent
@@ -43,6 +45,7 @@ public class TheChestWhisperer
                 chest.setChanged(); // Marque comme modifié
 
                 level.sendBlockUpdated(pos, state, state, 3);
+                chest.getLevel().blockEvent(pos, chest.getBlockState().getBlock(), 1, 0);
 
                 System.out.println("Coffre placé par : " + player.getName().getString());
             }
