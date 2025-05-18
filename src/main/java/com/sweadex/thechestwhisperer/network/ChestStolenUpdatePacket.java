@@ -12,7 +12,6 @@ public class ChestStolenUpdatePacket {
         this.stolen = stolen;
     }
 
-    // Constructeur de réception (decode)
     public ChestStolenUpdatePacket(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.stolen = buf.readBoolean();

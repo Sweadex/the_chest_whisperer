@@ -16,5 +16,9 @@ public class ChestStolenData {
         if (stolen) stolenChests.put(pos, true);
         else stolenChests.remove(pos);
     }
+
+    public static void clear() {
+        stolenChests.clear();
+    }
 }
 

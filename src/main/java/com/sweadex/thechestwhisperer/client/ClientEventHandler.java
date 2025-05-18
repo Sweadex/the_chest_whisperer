@@ -1,6 +1,7 @@
 package com.sweadex.thechestwhisperer.client;
 
 import com.sweadex.thechestwhisperer.TheChestWhisperer;
+import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -13,5 +14,11 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BlockEntityType.CHEST, CustomChestRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(ChestModelLayers.LEFT, ChestRenderer::createDoubleBodyLeftLayer);
+        event.registerLayerDefinition(ChestModelLayers.RIGHT, ChestRenderer::createDoubleBodyRightLayer);
     }
 }

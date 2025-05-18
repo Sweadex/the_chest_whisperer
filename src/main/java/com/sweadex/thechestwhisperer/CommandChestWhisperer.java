@@ -20,7 +20,6 @@ public class CommandChestWhisperer {
                                     BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
                                     CommandSourceStack source = context.getSource();
 
-                                    // Récupérer le block entity à la position donnée
                                     BlockEntity blockEntity = source.getLevel().getBlockEntity(pos);
                                     if (blockEntity instanceof ChestBlockEntity) {
                                         CompoundTag persistentData = blockEntity.getPersistentData();
@@ -28,7 +27,6 @@ public class CommandChestWhisperer {
                                         String lastThief = persistentData.contains("lastThief") ? persistentData.getString("lastThief") : "Aucun";
 
 
-                                        // Envoyer un message au joueur admin
                                         source.sendSuccess(() -> Component.literal("Owner: " + owner), false);
                                         source.sendSuccess(() -> Component.literal("Last Thief: " + lastThief), false);
 
