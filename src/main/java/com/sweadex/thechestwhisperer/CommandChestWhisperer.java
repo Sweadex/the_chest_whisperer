@@ -15,6 +15,7 @@ public class CommandChestWhisperer {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("checkchest")
+                        .requires(source -> source.hasPermission(2))  // <-- ici la permission
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())
                                 .executes(context -> {
                                     BlockPos pos = BlockPosArgument.getLoadedBlockPos(context, "pos");
@@ -25,7 +26,6 @@ public class CommandChestWhisperer {
                                         CompoundTag persistentData = blockEntity.getPersistentData();
                                         String owner = persistentData.contains("owner") ? persistentData.getString("owner") : "Aucun";
                                         String lastThief = persistentData.contains("lastThief") ? persistentData.getString("lastThief") : "Aucun";
-
 
                                         source.sendSuccess(() -> Component.literal("Owner: " + owner), false);
                                         source.sendSuccess(() -> Component.literal("Last Thief: " + lastThief), false);
@@ -38,4 +38,5 @@ public class CommandChestWhisperer {
                                 }))
         );
     }
+
 }

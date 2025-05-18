@@ -58,7 +58,7 @@ public class ChestMonitor {
         if (!data.contains("owner")) {
             data.putString("owner", player.getGameProfile().getName());
             chest.setChanged();
-            System.out.println("Owner défini automatiquement : " + player.getGameProfile().getName());
+            System.out.println("Owner defini automatiquement : " + player.getGameProfile().getName());
         }
 
         String ownerUUID = data.getString("owner");
@@ -72,13 +72,15 @@ public class ChestMonitor {
 
         int lastCount = lastItemCounts.getOrDefault(pos, itemCount);
         if (itemCount < lastCount) {
-            if (!player.getGameProfile().getName().equals(ownerUUID) &&
-                    (data.contains("lastThief") && player.getName().getString().equals(data.getString("lastThief")))) {
+            if (!player.getGameProfile().getName().equals(ownerUUID)) {
+                if (data.contains("lastThief") && player.getName().getString().equals(data.getString("lastThief"))){
+                    return;
+                }
                 data.putString("lastThief", player.getName().getString());
                 chest.setChanged();
                 ChestStolenDataServer.setChestStolen((ServerLevel) player.level(), pos, true);
                 NetworkHandler.sendChestStolenUpdate(pos, true);
-                System.out.println("Vol détecté du coffre de " + ownerUUID + "par " + player.getName().getString());
+                System.out.println("Vol detecte du coffre de " + ownerUUID + " par " + player.getName().getString() + " (" + pos + ")");
             }
         }
 
@@ -89,7 +91,7 @@ public class ChestMonitor {
             chest.setChanged();
             ChestStolenDataServer.setChestStolen((ServerLevel) player.level(), pos, false);
             NetworkHandler.sendChestStolenUpdate(pos, false);
-            System.out.println("Propriétaire a ouvert le coffre et a reset l'etat du coffre.");
+            System.out.println("Proprietaire a ouvert le coffre et a reset l'etat du coffre.");
         }
     }
 }
