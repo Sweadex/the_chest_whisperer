@@ -3,7 +3,9 @@ package com.sweadex.thechestwhisperer;
 import com.sweadex.thechestwhisperer.network.NetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,21 +31,17 @@ public class ChestMonitor {
             Container inv = chestMenu.getContainer();
             if (inv instanceof ChestBlockEntity chest) {
                 processChest(player, chest);
-            } else if (inv.getClass().getSimpleName().equals("CompoundContainer")) {
+            } else if (inv instanceof CompoundContainer compound) {
                 try {
-                    var leftField = inv.getClass().getDeclaredField("container1");
-                    var rightField = inv.getClass().getDeclaredField("container2");
-                    leftField.setAccessible(true);
-                    rightField.setAccessible(true);
-
-                    Object left = leftField.get(inv);
-                    Object right = rightField.get(inv);
-
-                    if (left instanceof ChestBlockEntity leftChest) {
-                        processChest(player, leftChest);
-                    }
-                    if (right instanceof ChestBlockEntity rightChest) {
-                        processChest(player, rightChest);
+                    Field[] fields = CompoundContainer.class.getDeclaredFields();
+                    for (Field field : fields) {
+                        if (Container.class.isAssignableFrom(field.getType())) {
+                            field.setAccessible(true);
+                            Object container_bis = field.get(compound);
+                            if (container_bis instanceof ChestBlockEntity chest) {
+                                processChest(player, chest);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
