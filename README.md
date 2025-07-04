@@ -13,7 +13,7 @@ _**Protégez vos coffres. Dénoncez les voleurs.**_
 * **Suivi du dernier voleur**: Chaque coffre garde en mémoire le **nom du dernier voleur** identifié.
 * **Affichage visuel**: Les coffres volés changent d’apparence grâce à une **texture personnalisée** qui indique qu’un vol a eu lieu.
 * **Support des double coffres**: Le système fonctionne parfaitement avec les **coffres doubles** (gauche/droite).
-* **Commande d’administration**: `/checkchest &lt;position&gt;` — Permet aux opérateurs (OPs) de voir le **propriétaire** et le **dernier voleur** d’un coffre donné.
+* **Commande d’administration**: `/checkchest position` — Permet aux opérateurs (OPs) de voir le **propriétaire** et le **dernier voleur** d’un coffre donné.
 
 ---
 
